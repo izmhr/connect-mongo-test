@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ログイン前</title>
+</head>
+<body>
+  <h2>ログイン</h2>
+  <form action="/login" method="GET">
+    <input type="text" name="email" placeholder="Email"/>
+    <input type="password" name="password" placeholder="Password"/>
+    <input type="submit" value="ログイン">
+  </form>
+
+  <h2>新規登録</h2>
+  <form action="/add" method="POST">
+    <input type="text" name="email" placeholder="Email"/>
+    <input type="password" name="password" placeholder="Password"/>
+    <input type="submit" value="新規登録">
+  </form>
+</body>
+</html>
