@@ -11,7 +11,7 @@ var model = require('../model.js'),
 // ログイン後ページ
 exports.index = function(req, res) {
   res.render('index', { user: req.session.user});
-  console.log(req.session.user);
+  console.log("correctly loggined");
 }
 
 // ユーザー登録機能
@@ -57,6 +57,7 @@ exports.login = function(req, res) {  // login は postで行われる
       res.render('login');
     } else {
       req.session.user = email; // 実際はここでもっと固有のデータをいっぱい引っ張り出して使うなどする。
+      req.session.original = "hohohoho";  // オリジナルのsessionデータを加えるテスト
       // redirect の場合、リクエスト内容は引き継がれる
       res.redirect('/');
     }
