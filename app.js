@@ -44,14 +44,14 @@ app.use(express.session({         // cookieに書き込むsessionの仕様を定
   store: new MongoStore({
     db: 'session',
     host: 'localhost',
-    clear_interval: 60 * 60
+    clear_interval: 60 * 60     // mongodbに登録されたsession一覧を見て、expireしている物を消す、ということをする周期
   }),
   cookie: { //cookieのデフォルト内容
     httpOnly: false,
-    maxAge: new Date(Date.now() + 60 * 60 * 1000)  //60 hours?
+    maxAge: new Date(Date.now() + 60 * 60 * 1000)  //1 hour. ここを指定しないと、ブラウザデフォルト(ブラウザを終了したらクッキーが消滅する)になる
   } 
 }));
-// おそらくだがここでreq中のcookiesのconnect-sidをチェックし、
+// (おそらく)req中のcookiesのconnect-sidをチェックし、
 // データベースを検索し、同じsidを持つセッションデータをreqに追加している。
 
 app.use(app.router);

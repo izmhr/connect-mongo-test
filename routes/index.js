@@ -4,7 +4,7 @@
  */
 
  // model
- // model.js をrequireした時点で、db作成などは行われている。
+ // model.js をrequireした時点で、db作成などは行われる
 var model = require('../model.js'),
   User = model.User;
 
@@ -16,29 +16,17 @@ exports.index = function(req, res) {
 
 // ユーザー登録機能
 exports.add = function(req, res) {  // add は postで行われる。
-  // TODO: DB固有のunique確認を使うべき？
-  User.findOne({email: req.body.email}, function(err, user){  // emailが既に使われているか確認
+  var newUser = new User(req.body); // postの内容{email: "hogehoge", password: "fuga@fuga"}を利用して、新しいドキュメントを作成
+  newUser.save(function(err){       // 追加する
     if(err){
-      console.log("query error");
-    }
-    if(user){
-      // console.log(user);
-      console.log("the email is already used");
-      res.redirect('/login');
+      console.log(err);
+      // model.jsの方で email に対し unique option をつけたので、同じemailを指定するとエラーが返ってくる
+      if( err.code === 11000 ) console.log("the email is already used");
+      res.redirect('back');
     } else {
-      console.log("no match... create new user");
-      var newUser = new User(req.body); // postの内容{email: "hogehoge", password: "fuga@fuga"}を利用して、新しいドキュメントを作成
-      newUser.save(function(err){       // 追加する
-        if(err) {
-          console.log(err);
-          res.redirect('back');
-        } else {
-          console.log("add success and redirect to '/'");
-          // console.log(req.query);
-          req.session.user = req.body.email;  // ここでログインもしてしまう
-          res.redirect('/');  // 新しいアカウントが作られたので、次のloginCheckは成功する
-        }
-      });
+      console.log("add success and redirect to '/'");
+      req.session.user = req.body.email;  // ここでログインもしてしまう
+      res.redirect('/');  // 新しいアカウントが作られたので、次のloginCheckは成功する
     }
   });
 };

@@ -1,3 +1,7 @@
+// (1) データベースとの接続
+// (2) スキーマの作成
+// (3) モデルの登録 & 利用開始
+
 var mongoose = require('mongoose');
 var url = 'mongodb://localhost/user'; // database
 var db  = mongoose.createConnection(url, function(err, res){
@@ -8,12 +12,12 @@ var db  = mongoose.createConnection(url, function(err, res){
   }
 });
 
-// Modelの定義 Modelは構造を意味する
+// schema = Modelの定義 Modelは構造を意味する
+// schemaのunique指定 http://mongoosejs.com/docs/api.html#schematype_SchemaType-unique
 var UserSchema = new mongoose.Schema({
-  email    : String,
+  email    : {type:String, unique: true},
   password  : String
 },{collection: 'info'});  // collection名を指定する
 
-// UserSchemaの定義をコンパイルして、(ドキュメントの)コンストラクタを生成する
-// ドキュメントは、modelのインスタンス、と言える。
+// UserSchemaの定義をコンパイルして、model = ドキュメントのコンストラクタを生成する
 exports.User = db.model('User', UserSchema);
