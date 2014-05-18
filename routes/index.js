@@ -3,7 +3,7 @@
  * GET home page.
  */
 
- // model
+ // model.js 参照
  // model.js をrequireした時点で、db作成などは行われる
 var model = require('../model.js'),
   User = model.User;
@@ -16,16 +16,16 @@ exports.index = function(req, res) {
 
 // ユーザー登録機能
 exports.add = function(req, res) {  // add は postで行われる。
-  var newUser = new User(req.body); // postの内容{email: "hogehoge", password: "fuga@fuga"}を利用して、新しいドキュメントを作成
+  var newUser = new User(req.body); // postの内容{email: "fuga@fuga", password: "fugafuga"}を利用して、新しいドキュメントを作成
   newUser.save(function(err){       // 追加する
     if(err){
       console.log(err);
-      // model.jsの方で email に対し unique option をつけたので、同じemailを指定するとエラーが返ってくる
+      // model.jsの方で email に対し unique option をつけたので、同じemailを指定するとエラー11000が返ってくる
       if( err.code === 11000 ) console.log("the email is already used");
       res.redirect('back');
     } else {
       console.log("add success and redirect to '/'");
-      req.session.user = req.body.email;  // ここでログインもしてしまう
+      req.session.user = req.body.email;  // ここでsessionに記録して、ログインする
       res.redirect('/');  // 新しいアカウントが作られたので、次のloginCheckは成功する
     }
   });
@@ -44,16 +44,15 @@ exports.login = function(req, res) {  // login は postで行われる
       console.log("no data");
       res.render('login');
     } else {
-      req.session.user = email; // 実際はここでもっと固有のデータをいっぱい引っ張り出して使うなどする。
-      req.session.original = "hohohoho";  // オリジナルのsessionデータを加えるテスト
-      // redirect の場合、リクエスト内容は引き継がれる
+      req.session.user = email; // 実際はここでもっと固有のデータをいっぱい引っ張り出して使うなどする
+      // redirectの場合、リクエスト内容(ここでは特にcookieのこと)は引き継がれる
       res.redirect('/');
     }
   });
 };
 
 exports.logout = function(req, res){
-  req.session.destroy();      // sessionが消えたreqが、次のindexのgetにリダイレクトされている
+  req.session.destroy();      // sessionが消えたreqが、次のindexのgetに引き継がれるので、そちらではログインが出来ない
   console.log('deleted session id');
   console.log(req.session);
   res.redirect('/');
