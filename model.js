@@ -20,4 +20,5 @@ var UserSchema = new mongoose.Schema({
 },{collection: 'info'});  // collection名を指定する
 
 // UserSchemaの定義をコンパイルして、model = ドキュメントのコンストラクタを生成する
+// ここでは'User'というdbにユーザーアカウント情報を足していく、ておいう定義。
 exports.User = db.model('User', UserSchema);

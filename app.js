@@ -43,7 +43,7 @@ app.use(express.methodOverride());
 // http://christina04.blog.fc2.com/blog-entry-268.html
 // 署名付きcookieと署名無し
 // http://hitsujiwool.tumblr.com/post/24238326975/connect-2-0
-app.use(express.cookieParser());  // 先にcookieをパースしておく
+app.use(express.cookieParser());  // cookieのパースを行う。次に決めるsecretを使って行われる
 app.use(express.session({         // cookieに書き込むsessionの仕様を定める
   secret: 'secret',               // 符号化。改ざんを防ぐ
   store: new MongoStore({
