@@ -53,13 +53,12 @@ app.use(express.session({         // cookieに書き込むsessionの仕様を定
   }),
   cookie: { //cookieのデフォルト内容
     httpOnly: false,
-    maxAge: new Date(Date.now() + 60 * 60 * 1000)  //1 hour. ここを指定しないと、ブラウザデフォルト(ブラウザを終了したらクッキーが消滅する)になる
+    maxAge: 60 * 60 * 1000//1 hour. ここを指定しないと、ブラウザデフォルト(ブラウザを終了したらクッキーが消滅する)になる
   } 
 }));
 // (おそらく)req中のcookiesのsessionIDをチェックし、
-// データベースを検索し、同じsIDを持つセッションデータをreqに追加したり
-// 存在しないsessionIDでリクエストしてきたらリクエストからsessionを消したり等の
-// 暗黙の事前処理を行う
+// データベースを検索し、同じsidを持つセッションデータをreqに展開したり
+// expireしていたらあらたにsessionデータを作るなどしているミドルウェア
 
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));

@@ -46,6 +46,7 @@ exports.login = function(req, res) {  // login は postで行われる
     } else {
       req.session.user = email; // 実際はここでもっと固有のデータをいっぱい引っ張り出して使うなどする
       // redirectの場合、リクエスト内容(ここでは特にcookieのこと)は引き継がれる
+      console.log("user found!! user found!!");
       res.redirect('/');
     }
   });
